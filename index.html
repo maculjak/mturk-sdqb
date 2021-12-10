@@ -7,11 +7,13 @@
     var loaded = false;
     var clicked = true;
     $(document).ready(function () {
-        $.getJSON("https://maculjak.github.io/mturk-sdqb/docs/" + id +".json").done(function (data) {
+        $.getJSON("https://maculjak.github.io/mturk-sdqb/docs/1.json").done(function (data) {
 
             var form = document.getElementById("content");
             var q = 0;
+            console.log(data);
             data.forEach(x => {
+                console.log(x);
                 var div = document.createElement("div");
                 var p = document.createElement("p");
                 var quotation_nb = document.createElement("h4");
