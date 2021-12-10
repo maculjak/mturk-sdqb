@@ -45,14 +45,14 @@
                         '_none_reason">The speaker name is</label><input type="text" id="q' + q +
                         '_none_reason" name="q' + q + "_" + k + '_none_reason" placeholder="Person name"></p>'
                     temp_var +=
-                        "<p>Correct QID cannot be determined from the context and Wikidata descriptions She/He is:<br>"
+                        "<p>Correct QID cannot be determined from the context and Wikidata descriptions<br>"
                     temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
                         '_ambiguous" value="ambiguous"><label class="no" for="q' + q + "_" + k +
                         '_ambiguous">Insufficient information</label>'
                     temp_var += '<br><input type="radio" name="q' + q + "_" + k+ '" id="q' + q + "_" + k +
                         '_not_mentioned" value="not_mentioned"><label class="no" for="q' + q + "_" + k +
                         '_not_mentioned">Correct QID doesn\'t exist in Wikidata</label></p>'
-                    temp_var += "<p>There is a problem with this quotation<br>"
+                    temp_var += "<p>There is a problem with this named entity or a QID<br>"
                     temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
                         '_not_en" value="not_en"><label class="no" for="q' + q + "_" + k +
                         '_not_en">Not a person</label>'
