@@ -1,13 +1,15 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js">
 </script>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
 <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search)
     var id = urlParams.get('id') || 1 // ${index};
     var loaded = false;
     var clicked = true;
     $(document).ready(function () {
-        $.getJSON("https://maculjak.github.io/mturk-sdqb/docs/1.json").done(function (data) {
+        $.getJSON("/home/maculjak/mturk-sdqb/1.json").done(function (data) {
 
             var form = document.getElementById("content");
             var q = 0;
@@ -17,7 +19,7 @@
                 var div = document.createElement("div");
                 var p = document.createElement("p");
                 var quotation_nb = document.createElement("h4");
-                quotation_nb.innerText = "Quotation " + (q + 1)
+                quotation_nb.innerText = "Article " + (q + 1);
                 p.innerHTML = x.content;
 
                 var sel = document.createElement("div");
@@ -25,13 +27,13 @@
                 var start_question =
                     "Select <b>one</b> of the following options:<p>";
                 var temp_var =
-                    "The speaker of the quotation is <b>clear</b> from the context. She/He is:<br>";
-                for (let i = 0; i < x.entities.length; i++) {
+                    "QID corresponding to a named entity is clear from the article content and Wikidata description. It is:";
+                /*for (let i = 0; i < x.names.length; i++) {
                     let field_id = "q" + q + "_" + i
                     temp_var += '<input type="radio" name="q' + q + '" id="' + field_id +
                         '" value="' + i + '"><label class="yes" for="' + field_id + '">' + x
-                        .entities[i] + '</label><br>'
-                }
+                        .names[i] + '</label><br>'
+                }*/
                 temp_var += '<input type="radio" name="q' + q + '" id="q' + q +
                     '_none" value="none"><label class="no" for="q' + q +
                     '_none">None of the above</label>'
@@ -265,7 +267,7 @@
 
     <h3>Answer options</h3>
     <p>
-        <h4>QID corresponding to a named entity is clear from the context and Wikidata description</h4>
+        <h4>QID corresponding to a named entity is clear from the article content and Wikidata description</h4>
 
         <ul>
             <li>If <b>QID</b> corresponding to a <b>named entity mention</b> is among <b class="yes">listed QIDs</b>, you can select it directly.</li>
