@@ -13,9 +13,8 @@
 
             var form = document.getElementById("content");
             var q = 0;
-            console.log(data);
             data.forEach(x => {
-                console.log(x);
+                console.log(x.names);
                 var div = document.createElement("div");
                 var p = document.createElement("p");
                 var quotation_nb = document.createElement("h4");
@@ -25,41 +24,54 @@
                 var sel = document.createElement("div");
                 sel.className = "sel";
                 var start_question =
-                    "Select <b>one</b> of the following options:<p>";
-                var temp_var =
-                    "QID corresponding to a named entity is clear from the article content and Wikidata description. It is:";
-                for (let i = 0; i < x.names.length; i++) {
+                    "For each named entity select <b>one</b> of the options:<p>";
+
+                var temp_var = '';
+                var k = 0;
+
+                Object.entries(x.names).forEach(x => {
+                    temp_var += '<b>' + x[0] + '<b><br />';
+                    temp_var += "QID corresponding to a named entity is clear from the article content and Wikidata description. It is:<br/>";
+                    for (let i = 0; i < x[1].length; i++) {
+                        let field_id = "q" + q + "_" + k;
+                        temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="' + field_id +
+                            '" value="' + i + '"><label class="yes" for="' + field_id + '">' + x[1][i] + '</label><br>'
+                    }
+                    temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
+                    '_none" value="none"><label class="no" for="q' + q + "_" + k +
+                    '_none">None of the above</label>'
+                    temp_var += '<label for="q' + q + "_" + k +
+                        '_none_reason">The speaker name is</label><input type="text" id="q' + q +
+                        '_none_reason" name="q' + q + "_" + k + '_none_reason" placeholder="Person name"></p>'
+                    temp_var +=
+                        "<p>Correct QID cannot be determined from the context and Wikidata descriptions She/He is:<br>"
+                    temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
+                        '_ambiguous" value="ambiguous"><label class="no" for="q' + q + "_" + k +
+                        '_ambiguous">Insufficient information</label>'
+                    temp_var += '<br><input type="radio" name="q' + q + '" id="q' + q + "_" + k +
+                        '_not_mentioned" value="not_mentioned"><label class="no" for="q' + q + "_" + k +
+                        '_not_mentioned">Correct QID doesn\'t exist in Wikidata</label></p>'
+                    temp_var += "<p>There is a problem with this quotation<br>"
+                    temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
+                        '_not_en" value="not_en"><label class="no" for="q' + q + "_" + k +
+                        '_not_en">Not a person</label>'
+                    temp_var += '<br><input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
+                        '_not_quote" value="not_quote"><label class="no" for="q' + q + "_" + k +
+                        '_not_quote">Redirect</label>'
+                    temp_var += '<br><input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
+                        '_other" value="other"><label class="no" for="q' + q + "_" + k +
+                        '_other">Another problem:</label><input type="text" id="q' + q + "_" + k +
+                        '_other_reson" name="q' + q + "_" + k +
+                        '_other_reason" placeholder="Problem description"></p>'
+                    k++;
+                })
+                /*for (let i = 0; i < x.names.length; i++) {
                     let field_id = "q" + q + "_" + i
                     temp_var += '<input type="radio" name="q' + q + '" id="' + field_id +
                         '" value="' + i + '"><label class="yes" for="' + field_id + '">' + x
                         .names[i] + '</label><br>'
-                }
-                temp_var += '<input type="radio" name="q' + q + '" id="q' + q +
-                    '_none" value="none"><label class="no" for="q' + q +
-                    '_none">None of the above</label>'
-                temp_var += '<label for="q' + q +
-                    '_none_reason">The speaker name is</label><input type="text" id="q' + q +
-                    '_none_reason" name="q' + q + '_none_reason" placeholder="Person name"></p>'
-                temp_var +=
-                    "<p>The speaker of the quotation is <b>not clear</b> from the context. She/He is:<br>"
-                temp_var += '<input type="radio" name="q' + q + '" id="q' + q +
-                    '_ambiguous" value="ambiguous"><label class="no" for="q' + q +
-                    '_ambiguous">Ambiguous (two or more possible speakers)</label>'
-                temp_var += '<br><input type="radio" name="q' + q + '" id="q' + q +
-                    '_not_mentioned" value="not_mentioned"><label class="no" for="q' + q +
-                    '_not_mentioned">Not mentioned in the context by name</label></p>'
-                temp_var += "<p>There is a problem with this quotation<br>"
-                temp_var += '<input type="radio" name="q' + q + '" id="q' + q +
-                    '_not_en" value="not_en"><label class="no" for="q' + q +
-                    '_not_en">It is not in English</label>'
-                temp_var += '<br><input type="radio" name="q' + q + '" id="q' + q +
-                    '_not_quote" value="not_quote"><label class="no" for="q' + q +
-                    '_not_quote">It is not a quotation</label>'
-                temp_var += '<br><input type="radio" name="q' + q + '" id="q' + q +
-                    '_other" value="other"><label class="no" for="q' + q +
-                    '_other">Another problem:</label><input type="text" id="q' + q +
-                    '_other_reson" name="q' + q +
-                    '_other_reason" placeholder="Problem description"></p>'
+                }*/
+                
                 sel.innerHTML = start_question + temp_var;
 
                 div.appendChild(quotation_nb)
