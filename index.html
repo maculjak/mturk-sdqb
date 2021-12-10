@@ -6,6 +6,7 @@
 <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search)
     var id = urlParams.get('id') || 1 // ${index};
+    console.log(id);
     var loaded = false;
     var clicked = true;
     $(document).ready(function () {
@@ -35,7 +36,7 @@
                     for (let i = 0; i < x[1].length; i++) {
                         let field_id = "q" + q + "_" + k;
                         temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="' + field_id +
-                            '" value="' + i + '"><label class="yes" for="' + field_id + '">' + x[1][i] + '</label><br>'
+                            '" value="' + i + '"><label class="yes" for="' + field_id + '">' + '<a href="https://www.wikidata.org/wiki/' + x[1][i] + '">' + x[1][i] + '</a></label><br>'
                     }
                     temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
                     '_none" value="none"><label class="no" for="q' + q + "_" + k +
@@ -336,12 +337,12 @@
         <ul>
             <li>
                 Famous Chicago Bulls player <mark>Michael Jordan</mark> retires.<br />
-                <b>Choices</b>: <a href="https://www.wikidata.org/wiki/41421">Q41421</a> (American basketball player and businessman), <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984))<br />
+                <b>Choices</b>: <a href="https://www.wikidata.org/wiki/Q41421">Q41421</a> (American basketball player and businessman), <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984))<br />
                 In this case, correct QID is Q41421, so you should select <b class="yes">Q41421</b>.
             </li>
             <li>
                 Computer scientist <mark>Michael Jordan</mark> invented Latent Dirichlet Allocation.<br/>
-                <b>Choices</b>: <a href="https://www.wikidata.org/wiki/41421">Q41421</a> (American basketball player and businessman),  <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984)), <br />
+                <b>Choices</b>: <a href="https://www.wikidata.org/wiki/Q41421">Q41421</a> (American basketball player and businessman),  <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984)), <br />
                 In this case, none of the listed QIDs is correct. Correct QID is  <a href="https://www.wikidata.org/wiki/Q6831716">Q3308285</a> (American computer scientist, University of California, Berkeley). You should select <b class="no">None of the above</b>, then fill the field "Correct QID" with "Q3308285".
             </li>
         </ul>
@@ -350,7 +351,7 @@
         <ul>
             <li>
                 <mark>Michael Jordan</mark> arrives in chicago. </br>
-                <b>Choices</b>:<a href="https://www.wikidata.org/wiki/41421">Q41421</a> (American basketball player and businessman), <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984))<br />
+                <b>Choices</b>:<a href="https://www.wikidata.org/wiki/Q41421">Q41421</a> (American basketball player and businessman), <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984))<br />
                 In this case, you should select <b class="no">Insufficient information</b>, because here it is not clear which Michael Jordan the is article referring to.
             </li>
             <li>
