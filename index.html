@@ -20,7 +20,10 @@
                 var p = document.createElement("p");
                 var quotation_nb = document.createElement("h4");
                 quotation_nb.innerText = "Article " + (q + 1);
-                p.innerHTML = x.content;
+
+                p.innerHTML = "<b>URL:</b> <a href='" + x.url + "'>" + x.url + "</a>"
+                p.innerHTML += "<br><b>Date:</b> " +x.date
+                p.innerHTML += "<br><br>" + x.content;
 
                 var sel = document.createElement("div");
                 sel.className = "sel";
