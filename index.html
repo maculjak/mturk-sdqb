@@ -9,7 +9,7 @@
     var loaded = false;
     var clicked = true;
     $(document).ready(function () {
-        $.getJSON("/home/maculjak/mturk-sdqb/1.json").done(function (data) {
+        $.getJSON("https://maculjak.github.io/mturk-sdqb/docs/1.json").done(function (data) {
 
             var form = document.getElementById("content");
             var q = 0;
@@ -28,12 +28,12 @@
                     "Select <b>one</b> of the following options:<p>";
                 var temp_var =
                     "QID corresponding to a named entity is clear from the article content and Wikidata description. It is:";
-                /*for (let i = 0; i < x.names.length; i++) {
+                for (let i = 0; i < x.names.length; i++) {
                     let field_id = "q" + q + "_" + i
                     temp_var += '<input type="radio" name="q' + q + '" id="' + field_id +
                         '" value="' + i + '"><label class="yes" for="' + field_id + '">' + x
                         .names[i] + '</label><br>'
-                }*/
+                }
                 temp_var += '<input type="radio" name="q' + q + '" id="q' + q +
                     '_none" value="none"><label class="no" for="q' + q +
                     '_none">None of the above</label>'
