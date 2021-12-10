@@ -46,7 +46,7 @@
                     '_none">None of the above</label>'
                     temp_var += '<label for="q' + q + "_" + k +
                         '_none_reason">The correct QID is</label><input type="text" id="q' + q +
-                        '_none_reason" name="q' + q + "_" + k + '_none_reason" placeholder="Person name"></p>'
+                        '_none_reason" name="q' + q + "_" + k + '_none_reason" placeholder="Correct QID"></p>'
                     temp_var +=
                         "<p>Correct QID cannot be determined from the context and Wikidata descriptions<br>"
                     temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
@@ -61,7 +61,9 @@
                         '_not_en">Not a person</label>'
                     temp_var += '<br><input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
                         '_not_quote" value="not_quote"><label class="no" for="q' + q + "_" + k +
-                        '_not_quote">Redirect</label>'
+                        '_not_quote">Redirect</label><input type="text" id="q' + q + "_" + k +
+                        '_other_reson" name="q' + q + "_" + k +
+                        '_other_reason" placeholder="Correct QID"></p>'
                     temp_var += '<br><input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
                         '_other" value="other"><label class="no" for="q' + q + "_" + k +
                         '_other">Another problem:</label><input type="text" id="q' + q + "_" + k +
