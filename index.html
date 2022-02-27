@@ -37,7 +37,7 @@
                     var k = 0;
 
                     Object.entries(x.names).forEach(x => {
-                        temp_var += '<b>' + x[0] + '<b><br />';
+                        temp_var += '<b><mark>' + x[0] + '</mark><b><br />';
                         temp_var += "QID corresponding to a named entity is clear from the article content and the Wikidata item page. It is:<br/>";
                         for (let i = 0; i < x[1].length; i++) {
                             var desc = descriptions[x[1][i]];
