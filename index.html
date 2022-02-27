@@ -5,92 +5,92 @@
 <meta content="utf-8" http-equiv="encoding">
 <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search)
-    var id = urlParams.get('id') || 1 // ${index};
-    console.log(id);
+    var id = urlParams.get('id') || 0 // ${index};
+
+
     var loaded = false;
     var clicked = true;
+    var descriptions = {};
+
     $(document).ready(function () {
-        $.getJSON("https://maculjak.github.io/mturk-sdqb/docs/" + id + ".json").done(function (data) {
+        $.getJSON("https://maculjak.github.io/mturk-sdqb/docs/descriptions_sample1.json").done(function (descriptions) {
+            $.getJSON("https://maculjak.github.io/mturk-sdqb/docs/" + id + ".json").done(function (data) {
+                console.log(descriptions)
+                var form = document.getElementById("content");
+                var q = 0;
+                data.forEach(x => {
+                    var div = document.createElement("div");
+                    var p = document.createElement("p");
+                    var quotation_nb = document.createElement("h4");
+                    quotation_nb.innerText = "Article " + (q + 1);
 
-            var form = document.getElementById("content");
-            var q = 0;
-            data.forEach(x => {
-                console.log(x.names);
-                var div = document.createElement("div");
-                var p = document.createElement("p");
-                var quotation_nb = document.createElement("h4");
-                quotation_nb.innerText = "Article " + (q + 1);
+                    p.innerHTML = "<b>URL:</b> <a href='" + x.url + "'>" + x.url + "</a>"
+                    p.innerHTML += "<br><b>Date:</b> " +x.date
+                    p.innerHTML += "<br><br>" + x.content;
 
-                p.innerHTML = "<b>URL:</b> <a href='" + x.url + "'>" + x.url + "</a>"
-                p.innerHTML += "<br><b>Date:</b> " +x.date
-                p.innerHTML += "<br><br>" + x.content;
+                    var sel = document.createElement("div");
+                    sel.className = "sel";
+                    var start_question =
+                        "For each named entity select <b>one</b> of the options:<p>";
 
-                var sel = document.createElement("div");
-                sel.className = "sel";
-                var start_question =
-                    "For each named entity select <b>one</b> of the options:<p>";
+                    var temp_var = '';
+                    var k = 0;
 
-                var temp_var = '';
-                var k = 0;
+                    Object.entries(x.names).forEach(x => {
+                        temp_var += '<b>' + x[0] + '<b><br />';
+                        temp_var += "QID corresponding to a named entity is clear from the article content and the Wikidata item page. It is:<br/>";
+                        for (let i = 0; i < x[1].length; i++) {
+                            var desc = descriptions[x[1][i]];
+                            if (desc == '' || desc == 'None') {
+                                desc = 'No description'
+                            }
 
-                Object.entries(x.names).forEach(x => {
-                    temp_var += '<b>' + x[0] + '<b><br />';
-                    temp_var += "QID corresponding to a named entity is clear from the article content and Wikidata description. It is:<br/>";
-                    for (let i = 0; i < x[1].length; i++) {
-                        let field_id = "q" + q + "_" + k;
-                        temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="' + field_id +
-                            '" value="' + i + '"><label class="yes" for="' + field_id + '">' + '<a href="https://www.wikidata.org/wiki/' + x[1][i] + '">' + x[1][i] + '</a></label><br>'
-                    }
-                    temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
-                    '_none" value="none"><label class="no" for="q' + q + "_" + k +
-                    '_none">None of the above</label>'
-                    temp_var += '<label for="q' + q + "_" + k +
-                        '_none_reason">The correct QID is</label><input type="text" id="q' + q +
-                        '_none_reason" name="q' + q + "_" + k + '_none_reason" placeholder="Correct QID"></p>'
-                    temp_var +=
-                        "<p>Correct QID cannot be determined from the context and Wikidata descriptions<br>"
-                    temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
-                        '_ambiguous" value="ambiguous"><label class="no" for="q' + q + "_" + k +
-                        '_ambiguous">Insufficient information</label>'
-                    temp_var += '<br><input type="radio" name="q' + q + "_" + k+ '" id="q' + q + "_" + k +
-                        '_not_mentioned" value="not_mentioned"><label class="no" for="q' + q + "_" + k +
-                        '_not_mentioned">Correct QID doesn\'t exist in Wikidata</label></p>'
-                    temp_var += "<p>There is a problem with this named entity or a QID<br>"
-                    temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
-                        '_not_en" value="not_en"><label class="no" for="q' + q + "_" + k +
-                        '_not_en">Not a person</label>'
-                    temp_var += '<br><input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
-                        '_not_quote" value="not_quote"><label class="no" for="q' + q + "_" + k +
-                        '_not_quote">Redirect</label><input type="text" id="q' + q + "_" + k +
-                        '_other_reson" name="q' + q + "_" + k +
-                        '_other_reason" placeholder="Correct QID"></p>'
-                    temp_var += '<br><input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
-                        '_other" value="other"><label class="no" for="q' + q + "_" + k +
-                        '_other">Another problem:</label><input type="text" id="q' + q + "_" + k +
-                        '_other_reson" name="q' + q + "_" + k +
-                        '_other_reason" placeholder="Problem description"></p>'
-                    k++;
-                })
-                /*for (let i = 0; i < x.names.length; i++) {
-                    let field_id = "q" + q + "_" + i
-                    temp_var += '<input type="radio" name="q' + q + '" id="' + field_id +
-                        '" value="' + i + '"><label class="yes" for="' + field_id + '">' + x
-                        .names[i] + '</label><br>'
-                }*/
-                
-                sel.innerHTML = start_question + temp_var;
+                            let field_id = "q" + q + "_" + k;
+                            temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="' + field_id +
+                                '" value="' + i + '"><label  for="' + field_id + '">' + '<b><a href="https://www.wikidata.org/wiki/' + x[1][i] + '">' + x[1][i] + '</a></b> ' + desc +' </label><br>'
+                        }
+                        // temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
+                        // '_none" value="none"><label class="no" for="q' + q + "_" + k +
+                        // '_none">None of the above</label>'
+                        // temp_var += '<label for="q' + q + "_" + k +
+                        //     '_none_reason">The correct QID is</label><input type="text" id="q' + q +
+                        //     '_none_reason" name="q' + q + "_" + k + '_none_reason" placeholder="Correct QID"></p>'
+                        temp_var +=
+                            "<p>Correct QID cannot be determined from the context and Wikidata item pages of the candidate QIDs<br>"
+                        temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
+                            '_ambiguous" value="ambiguous"><label class="no" for="q' + q + "_" + k +
+                            '_ambiguous"><b>Correct QID is not listed</b></label><br>'
+                        temp_var += '<input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
+                            '_not_en" value="not_en"><label class="no" for="q' + q + "_" + k +
+                            '_not_en"><b>The mention is not a person</b></label>'
+                        temp_var += '<br><input type="radio" name="q' + q + "_" + k + '" id="q' + q + "_" + k +
+                            '_not_quote" value="not_quote"><label class="no" for="q' + q + "_" + k +
+                            '_not_quote"><b>Redirect</b></label><input type="text" id="q' + q + "_" + k +
+                            '_other_reson" name="q' + q + "_" + k +
+                            '_other_reason" placeholder="Correct QID"></p>'
+                        k++;
+                    })
+                    /*for (let i = 0; i < x.names.length; i++) {
+                        let field_id = "q" + q + "_" + i
+                        temp_var += '<input type="radio" name="q' + q + '" id="' + field_id +
+                            '" value="' + i + '"><label class="yes" for="' + field_id + '">' + x
+                            .names[i] + '</label><br>'
+                    }*/
 
-                div.appendChild(quotation_nb)
-                div.appendChild(p);
-                div.appendChild(sel);
-                form.appendChild(div);
-                q++;
+                    sel.innerHTML = start_question + temp_var;
+
+                    div.appendChild(quotation_nb)
+                    div.appendChild(p);
+                    div.appendChild(sel);
+                    form.appendChild(div);
+                    q++;
+                });
+
+                loaded = true;
+            }).fail(function () {
+                alert('Error: unable to load data');
             });
-
-            loaded = true;
-        }).fail(function () {
-            alert('Error: unable to load data');
-        });
+        })
 
         $("#expand").click(function () {
 
@@ -131,11 +131,6 @@
         let problem = ''
         for (let i = 0; i < 10; i++) {
             let radioValue = form["q" + i].value;
-            if (radioValue == 'none' && form['q' + i + '_none_reason'].value == '') {
-                problem += 'Quotation ' + (i + 1) + ': None of the above selected, but no speaker name filled\n'
-            } else if (radioValue == 'other' && form['q' + i + '_other_reason'].value == '') {
-                problem += 'Quotation ' + (i + 1) + ': Another problem selected, but no description provided\n'
-            }
         }
         if (problem !== '') {
             alert(problem)
@@ -216,6 +211,7 @@
 
     label {
         padding: 0 0.25rem 0 0.01rem;
+        font-weight: normal !important;
     }
 
     #submitButton {
@@ -268,7 +264,7 @@
                 Under each <b>named entity</b> appearing in an article, <b>candidate QIDs</b> are listed.
             </li>
             <li>
-                Wikidata entity description is listed next to each <b>QID</b>.
+                Wikidata entity description is listed next to each <b>QID</b>. In some cases "No description" would be listed next to a candidate. This can happen when no description was provided in Wikidata at the time of the task creation or in case of a redirect (explained later).
             </li>
             <li>
                 Clicking on a <b>QID</b> leads you to Wikidata page of the corresponding entity.
@@ -277,7 +273,7 @@
                 You are provided with <b>content</b>, <b>URL</b>, and <b>publication date</b> of an article.
             </li>
             <li>
-                All the <b>named entities</b> appearing in an article are <mark>highlighted in yellow</mark> in each article.
+                All the <b>named entities</b> you should consider are <mark>highlighted in yellow</mark> in each article.
             </li>
          
         </ul>
@@ -289,26 +285,15 @@
 
         <ul>
             <li>If <b>QID</b> corresponding to a <b>named entity mention</b> is among <b class="yes">listed QIDs</b>, you can select it directly.</li>
-            <li>If <b>QID</b> corresponding to a <b>named entity mention</b> is not listed but correct entity <b>exists</b> in Wikidata. Select <b class="no">None of the above</b> and provide correct <b>QID</b> in the field next to this option.</li>
         </ul>
         <h4>Correct QID cannot be determined from the context and Wikidata descriptions</h4>
         <ul>
-            <li>Select <b class="yes">Insufficient information</b> if an article does not contain information crucial to determine correct <b>QID</b>.
-            <li>Select <b class="yes">Correct QID doesn't exist in Wikidata</b> if the <b>named entity</b> refers to a person which likely doesn't have a Wikidata page. This may happen if an article journalist or a photographer is identified as a named entity or if an article is from some local newspaper.
-        </ul>
-
-
-        <h4>There is a problem with this named entity or a QID</h4>
-        <ul>
+            <li>Select <b class="yes">Correct QID is not listed </b> if none of the provided candidate QIDs correspond to a <b>named entity</b>. This may happen if an article journalist or a photographer is identified as a named entity or if an article is from some local newspaper.
             <li>
-                Select <b class="yes">Not a person</b> if a <b>named entity</b> does not refer to a (real) person. This may happen if a named entity is e.g. a building or a fictional character that shares the same name with a real person. 
+                Select <b class="yes">The mention is not a person</b> if a <b>named entity</b> does not refer to a (real) person. This may happen if a named entity is e.g. a building or a fictional character that shares the same name with a real person.
             </li>
             <li>
                 Select <b class="yes">Redirect</b> if clicking on a <b>QID</b> you identified as correct leads you to a Wikidata entity with a <b>different QID</b>. Specify the <b>other QID</b> in the attached field.
-            </li>
-
-            <li>
-                Select <b class="yes">Another problem</b> if you identified a problem that isn't listed and describe it in the attached field.
             </li>
         </ul>
     </p>
@@ -327,7 +312,7 @@
             <li>
                 You may notice that some named entities are not marked. Don't worry about this.
             </li>
-            <li>Each HIT consists of <span class="emph">10</span> articles. You need to answer all of them to complete the task.</li>
+            <li>Each HIT consists of <span class="emph">10</span> mentions. You need to answer all of them to complete the task.</li>
 
         </ul>
     </p>
@@ -342,36 +327,21 @@
         <ul>
             <li>
                 Famous Chicago Bulls player <mark>Michael Jordan</mark> retires.<br />
-                <b>Choices</b>: <a href="https://www.wikidata.org/wiki/Q41421">Q41421</a> (American basketball player and businessman), <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984))<br />
+                <b>Choices</b>: <a href="https://www.wikidata.org/wiki/Q41421">Q41421</a> American basketball player and businessman, <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984))<br />
                 In this case, correct QID is Q41421, so you should select <b class="yes">Q41421</b>.
-            </li>
-            <li>
-                Computer scientist <mark>Michael Jordan</mark> invented Latent Dirichlet Allocation.<br/>
-                <b>Choices</b>: <a href="https://www.wikidata.org/wiki/Q41421">Q41421</a> (American basketball player and businessman),  <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984)), <br />
-                In this case, none of the listed QIDs is correct. Correct QID is  <a href="https://www.wikidata.org/wiki/Q6831716">Q3308285</a> (American computer scientist, University of California, Berkeley). You should select <b class="no">None of the above</b>, then fill the field "Correct QID" with "Q3308285".
             </li>
         </ul>
 
-        <h4>Correct QID cannot be determined from the context and Wikidata descriptions</h4>
+        <h4>Correct QID cannot be determined from the context and Wikidata item pages of the candidate entities</h4>
         <ul>
-            <li>
-                <mark>Michael Jordan</mark> arrives in chicago. </br>
-                <b>Choices</b>:<a href="https://www.wikidata.org/wiki/Q41421">Q41421</a> (American basketball player and businessman), <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984))<br />
-                In this case, you should select <b class="no">Insufficient information</b>, because here it is not clear which Michael Jordan the is article referring to.
-            </li>
             <li>
                 Burj Khalifa, an 830m high building, has been completed. Photo by <mark>Andrew Young</mark>.<br/>
                 <b>Choices</b>: <a href="https://www.wikidata.org/wiki/Q959635">Q959635</a> (American politician, diplomat, activist and pastor from Georgia), <a href="https://www.wikidata.org/wiki/Q4248941">Q4248941</a> (British cross-country skier)<br />
-                In this case, you should select <b class="yes">Correct QID doesn't exist in Wikidata</b>, because
-                here a newspaper photographer who doesn't have a Wikidata page has been identified as a named entity.
+                In this case, you should select <b class="yes">Correct QID is not listed</b>
             </li>
-        </ul>
-
-        <h4>There is a problem with this named entity, an article or a QID.</h4>
-        <ul>
             <li>
                 Billy Preston had just arrived at the Intensive Care Unit at <mark>Daniel Freeman</mark> Marina Hospital in Marina del Rey.<br />
-                Here, Daniel Freeman is the name of the hospital so you should select <b class="yes">Not a person</b>.
+                Here, Daniel Freeman is the name of the hospital so you should select <b class="yes">The mention is not a person</b>.
             </li>
             <li>
                 Suppose that <a href="https://www.wikidata.org/wiki/Q20793563">Q20793563</a> is a correct QID for some named entity. This QID actually leads you to <a href="https://www.wikidata.org/wiki/Q4914">Q4914</a>. Here you should select <b class="yes">Redirect</b> and fill the field "Correct QID" with "Q4914".
