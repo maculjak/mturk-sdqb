@@ -6,6 +6,7 @@
 <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search)
     var id = urlParams.get('id') || 0 // ${index};
+    console.log(id)
 
 
     var loaded = false;
@@ -27,6 +28,7 @@
                     p.innerHTML = "<b>URL:</b> <a href='" + x.url + "'>" + x.url + "</a>"
                     p.innerHTML += "<br><b>Date:</b> " +x.date
                     p.innerHTML += "<br><br>" + x.content;
+                    p.innerHTML += '<br><br><div style="height:100px;width:1500px;overflow:auto;">' + x.contents + '</div>'
 
                     var sel = document.createElement("div");
                     sel.className = "sel";
