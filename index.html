@@ -6,7 +6,17 @@
 <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search)
     var id = urlParams.get('id') || 0 // ${index};
-    console.log(id)
+    palette = ['#8dd3c7',
+ '#ffffb3',
+ '#fb8072',
+ '#80b1d3',
+ '#fdb462',
+ '#b3de69',
+ '#fccde5',
+ '#d9d9d9',
+ '#bc80bd',
+ '#ccebc5',
+ '#ffed6f']
 
 
     var loaded = false;
@@ -27,9 +37,8 @@
 
                     p.innerHTML = "<b>URL:</b> <a href='" + x.url + "'>" + x.url + "</a>"
                     p.innerHTML += "<br><b>Date:</b> " +x.date
-                    p.innerHTML += "<br><br><div style=\"width:1000px;overflow:auto;\">" + x.contents + "</div>";
-                    p.innerHTML += "<br><br> <b>Full article:</b>"
-                    p.innerHTML += '<br><br><div style="height:300px;width:1000px;overflow:auto;">' + x.content + '</div>'
+                    p.innerHTML += "<br><br><div style=\"width:1000px;overflow:auto;text-align:justify\">" + x.contents + "</div>"
+                    p.innerHTML += '<details><summary><b>Full article:</b></summary><p style="height:300px;text-align: justify;width:1000px;overflow:auto;">' + x.content + '</p></details>'
 
                     var sel = document.createElement("div");
                     sel.className = "sel";
@@ -40,7 +49,7 @@
                     var k = 0;
 
                     Object.entries(x.names).forEach(x => {
-                        temp_var += '<b><mark>' + x[0] + '</mark><b><br />';
+                        temp_var += '<b><mark>' + x[0] + '</mark><b><br/>';
                         temp_var += "QID corresponding to a named entity is clear from the article content and the Wikidata item page. It is:<br/>";
                         for (let i = 0; i < x[1].length; i++) {
                             var desc = descriptions[x[1][i]];
@@ -273,10 +282,13 @@
                 Clicking on a <b>QID</b> leads you to Wikidata page of the corresponding entity.
             </li>
             <li>
-                You are provided with <b>content</b>, <b>URL</b>, and <b>publication date</b> of an article.
+                You are provided with the <b>sentences</b> in which the named entity appears. If the sentences do not contain enough information to determine the correct QID, click on the "Full article:" text and the full article content will appear below.
             </li>
             <li>
-                All the <b>named entities</b> you should consider are <mark>highlighted in yellow</mark> in each article.
+            You are also provided with the, <b>URL</b>, and the <b>publication date</b> of each article.
+            </li>
+            <li>
+             All the <b>named entity mentions</b> you should consider are <mark>highlighted in yellow</mark> in each article.
             </li>
          
         </ul>
@@ -304,13 +316,16 @@
     <h3>Additional remarks</h3>
     <p>
         <ul>
-            <li>There may not be a need to read an entire article. Sometimes correct QID can be determined just by identifying what is the article about.</li>
-            <li>Some Wikdiata entities have a Wikipedia page. This can be useful if Wikidata page doesn't provide enough information.</li>
+            <li>In most cases, there may not be a need to read the entire article. Sometimes correct QID can be determined just by looking into the sentences where the named entity appears or by identifying what is the article about.</li>
+            <li>Some Wikidata entities have a Wikipedia page. This can be useful if Wikidata page doesn't provide enough information.</li>
             <li>
                 All the listed candidate QIDs are referring to real humans.
             </li>
             <li>
                 URLs of the articles don't always work. This mostly happens with older articles.
+            </li>
+            <li>
+            	Due to the nature of the data collection process, the articles posted prior to May 2014 are entirely in lowercase and thus, quite difficult to read.
             </li>
             <li>
                 You may notice that some named entities are not marked. Don't worry about this.
@@ -330,7 +345,7 @@
         <ul>
             <li>
                 Famous Chicago Bulls player <mark>Michael Jordan</mark> retires.<br />
-                <b>Choices</b>: <a href="https://www.wikidata.org/wiki/Q41421">Q41421</a> American basketball player and businessman, <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984))<br />
+                <b>Choices</b>: <a href="https://www.wikidata.org/wiki/Q41421">Q41421</a>(American basketball player and businessman), <a href="https://www.wikidata.org/wiki/Q6831716">Q6831716</a> (English footballer (born 1984))<br />
                 In this case, correct QID is Q41421, so you should select <b class="yes">Q41421</b>.
             </li>
         </ul>
